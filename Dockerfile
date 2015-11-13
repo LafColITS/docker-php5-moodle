@@ -13,6 +13,8 @@ RUN apt-get install -y \
         libpspell-dev \
         libcurl4-openssl-dev \
         libpng12-dev \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
         libicu-dev \
         libxml2-dev \
         php5-pspell \
@@ -20,7 +22,8 @@ RUN apt-get install -y \
         mysql-client
 
 RUN docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu && \
-        docker-php-ext-install mysql mysqli pspell curl gd intl xmlrpc ldap zip
+        docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+        docker-php-ext-install mysql mysqli pspell curl gd intl xmlrpc ldap zip mbstring iconv soap
 
 ADD https://getcomposer.org/composer.phar /usr/local/bin/composer
 RUN cd /usr/local/bin && \
